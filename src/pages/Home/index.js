@@ -73,17 +73,23 @@ export default class index extends Component {
                         <Image source={icMasjid} style={{ position: 'absolute', height: 175, width: '100%', resizeMode: 'stretch' }} />
                         <View style={{ flex: 1, flexDirection: 'column' }}>
                             <View style={styles.containerAdzan}>
-                                <Text style={styles.textAdzan}>Waktu Imsak Hari Ini</Text>
-                                <Text style={styles.waktuAdzan}>{this.state.jadwal.imsak}</Text>
+                                {
+                                    this.state.isLoading ? <Text style={styles.textAdzan}>- - - -</Text> : <Text style={styles.textAdzan}>Waktu Imsak Hari Ini</Text>
+                                }
+                                {
+                                    this.state.isLoading ? <Text style={styles.waktuAdzan}>--:--</Text> : <Text style={styles.waktuAdzan}>{this.state.jadwal.imsak}</Text>
+                                }
                             </View>
                             <View style={styles.containerLokasi}>
                                 <View style={styles.flexRow}>
                                     <Icon name='map-marker' size={20} color={colorWhite} />
-                                    <Text style={styles.textBottom}>Ciamis,West Java</Text>
+                                {
+                                    this.state.isLoading ? <Text style={styles.textBottom}>---, ---</Text> : <Text style={styles.textBottom}>Ciamis,West Java</Text>
+                                }
                                 </View>
                                 <View style={styles.flexRow}>
                                     <Icon name='calendar' size={20} color={colorWhite} />
-                                    <Text style={styles.textBottom}>{this.state.jadwal.tanggal}</Text>
+                                    {this.state.isLoading ? <Text style={{ color: colorWhite }}>-- -- -- --</Text> : <Text style={styles.textBottom}>{this.state.jadwal.tanggal}</Text>}
                                 </View>
                             </View>
                         </View>
@@ -114,13 +120,13 @@ export default class index extends Component {
                     <View>
                         <Card containerStyle={styles.styleCard} >
                             <View>
-                                <Text style={{ fontWeight: 'bold', fontSize: 14,  marginBottom: 4,}}>Ayat Hari Ini</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 14, marginBottom: 4, }}>Ayat Hari Ini</Text>
                                 <SkeletonContent
                                     containerStyle={{ flex: 1 }}
                                     isLoading={this.state.isLoading}
                                     layout={[
-                                        {key: 'id1', width: 100, height: 20, marginBottom: 6},
-                                        {key: 'id2', width: 300, height: 100, marginBottom: 6},
+                                        { key: 'id1', width: 100, height: 20, marginBottom: 6 },
+                                        { key: 'id2', width: 300, height: 100, marginBottom: 6 },
                                     ]}
                                 >
                                     <Text style={{ fontSize: 12, marginBottom: 10 }}>{this.state.namasurat} {this.state.quranAr.ayat}</Text>

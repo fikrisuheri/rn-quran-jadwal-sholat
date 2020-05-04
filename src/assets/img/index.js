@@ -1,4 +1,8 @@
-const icMasjid = require('./masjid.png');
+const icMasjid  = require('./masjid.png');
+const icQuran   = require('./quran.png');
+const icMasjid2 = require('./mosque.png') ;
 export {
-    icMasjid
+    icMasjid,
+    icQuran,
+    icMasjid2
 }
