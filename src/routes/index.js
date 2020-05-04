@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Home, Quran, Surat, Splash } from '../pages';
+import { Home, Quran, Surat, Splash, Notif } from '../pages';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { colorPrimary, colorStatusBar, colorWhite } from '../assets/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

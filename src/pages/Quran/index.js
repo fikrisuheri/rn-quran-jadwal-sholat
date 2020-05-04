@@ -53,8 +53,7 @@ export default class index extends Component {
                         this.state.hasil.map((item, i) => (
                             <ListItem
                                 key={i}
-                                title={item.nama}
-                                leftElement={item.nomor}
+                                title={item.nomor + '. ' +item.nama}
                                 rightSubtitle={item.asma}
                                 rightSubtitleStyle={{ fontSize: 18, fontWeight: 'bold' }}
                                 subtitle={item.arti + ' (' + item.ayat + ')'}
