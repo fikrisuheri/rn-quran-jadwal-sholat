@@ -2,6 +2,7 @@ package com.jadwal_sholat_mobile;
 
 import android.app.Application;
 import android.content.Context;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          new RNFusedLocationPackage();
           return packages;
         }
 
