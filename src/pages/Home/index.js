@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StatusBar, Image, StyleSheet, ScrollView } from 'react-native'
+import { Text, View, StatusBar, Image, StyleSheet, ScrollView, PermissionsAndroid } from 'react-native'
 import { colorPrimary, colorStatusBar, colorWhite } from '../../assets/colors'
 import { icMasjid } from '../../assets/img';
 import { GreenStatusBar } from '../../component'
@@ -8,6 +8,7 @@ import { Card, ListItem, Button } from 'react-native-elements';
 import axios from 'axios';
 import moment from 'moment';
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
+import Geolocation from 'react-native-geolocation-service';
 
 
 const JadwalComponent = ({ title = 'default', time = '00:00' }) => {
@@ -27,8 +28,10 @@ export default class index extends Component {
             namasurat: '',
             quranAr: [],
             quranId: [],
-            jadwal: [],
+            jadwal: {},
+            dateNow: '',
             isLoading: true,
+            placeName: '',
         }
     }
 
@@ -47,20 +50,75 @@ export default class index extends Component {
 
     async getJadwalSholat() {
         try {
-            const tanggalSkr = moment().format();
-            const tgl = tanggalSkr.substr(0, 10);
-            const response = await axios.get('https://api.banghasan.com/sholat/format/json/jadwal/kota/683/tanggal/' + tgl);
+            const tgl = moment().unix();
+            const response = await axios.get(
+                'http://api.aladhan.com/v1/timings/'+ tgl.toString() +
+                '?latitude='+ this.state.lat +
+                '&longitude='+ this.state.long +'&method=2');
             this.setState({
-                jadwal: response.data.jadwal.data,
+                jadwal: response.data.data.timings,
+                dateNow: response.data.data.date.readable,
                 isLoading: false
             })
         } catch (error) {
             console.error(error);
         }
     }
+
+    async requestPermissions() {
+        if (Platform.OS === 'ios') {
+            Geolocation.requestAuthorization();
+            Geolocation.setRNConfiguration({
+                skipPermissionRequests: false,
+                authorizationLevel: 'whenInUse',
+            });
+        }
+      
+        if (Platform.OS === 'android') {
+            await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            );
+        }
+
+        this.getCurrentLocation();
+    }
+
+    getCurrentLocation() {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                this.setState({
+                    lat: position.coords.latitude,
+                    long: position.coords.longitude
+                });
+                this.getCurrentAddress();
+            },
+            (error) => {
+                console.log(error.code, error.message);
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+    }
+
+    async getCurrentAddress() {
+        const accessToken = "pk.eyJ1IjoiaXJmYW5wdWxlIiwiYSI6ImNqdnpxbHFvbzAzM3UzeWxrcWtkbTVhamIifQ.TJM77G3WOEIOIYzk_IiWKQ";
+        try {
+            const response = await axios.get(
+                'https://api.mapbox.com/geocoding/v5/mapbox.places/'
+                + this.state.long + ',' + this.state.lat + '.json?types=place&access_token=' + accessToken
+            );
+            this.setState({
+                placeName: response.data.features[0].place_name,
+            });
+
+            this.getJadwalSholat();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     componentDidMount() {
         this.getQuranAcak();
-        this.getJadwalSholat();
+        this.requestPermissions();
     }
     render() {
         return (
@@ -77,19 +135,19 @@ export default class index extends Component {
                                     this.state.isLoading ? <Text style={styles.textAdzan}>- - - -</Text> : <Text style={styles.textAdzan}>Waktu Imsak Hari Ini</Text>
                                 }
                                 {
-                                    this.state.isLoading ? <Text style={styles.waktuAdzan}>--:--</Text> : <Text style={styles.waktuAdzan}>{this.state.jadwal.imsak}</Text>
+                                    this.state.isLoading ? <Text style={styles.waktuAdzan}>--:--</Text> : <Text style={styles.waktuAdzan}>{this.state.jadwal.Imsak}</Text>
                                 }
                             </View>
                             <View style={styles.containerLokasi}>
                                 <View style={styles.flexRow}>
                                     <Icon name='map-marker' size={20} color={colorWhite} />
                                 {
-                                    this.state.isLoading ? <Text style={styles.textBottom}>---, ---</Text> : <Text style={styles.textBottom}>Ciamis,West Java</Text>
+                                    this.state.isLoading ? <Text style={styles.textBottom}>---, ---</Text> : <Text style={styles.textBottom}>{this.state.placeName}</Text>
                                 }
                                 </View>
                                 <View style={styles.flexRow}>
                                     <Icon name='calendar' size={20} color={colorWhite} />
-                                    {this.state.isLoading ? <Text style={{ color: colorWhite }}>-- -- -- --</Text> : <Text style={styles.textBottom}>{this.state.jadwal.tanggal}</Text>}
+                                    {this.state.isLoading ? <Text style={{ color: colorWhite }}>-- -- -- --</Text> : <Text style={styles.textBottom}>{this.state.dateNow}</Text>}
                                 </View>
                             </View>
                         </View>
@@ -108,12 +166,12 @@ export default class index extends Component {
                                     { key: "someId6", width: 300, height: 20, marginBottom: 6 },
                                 ]}
                             >
-                                <JadwalComponent title='Imsak' time={this.state.jadwal.imsak} />
-                                <JadwalComponent title='Shubuh' time={this.state.jadwal.subuh} />
-                                <JadwalComponent title='Dzuhur' time={this.state.jadwal.dzuhur} />
-                                <JadwalComponent title='Ashar' time={this.state.jadwal.ashar} />
-                                <JadwalComponent title='Maghrib' time={this.state.jadwal.maghrib} />
-                                <JadwalComponent title='Isya' time={this.state.jadwal.isya} />
+                                <JadwalComponent title='Imsak' time={this.state.jadwal.Imsak} />
+                                <JadwalComponent title='Shubuh' time={this.state.jadwal.Fajr} />
+                                <JadwalComponent title='Dzuhur' time={this.state.jadwal.Dhuhr} />
+                                <JadwalComponent title='Ashar' time={this.state.jadwal.Asr} />
+                                <JadwalComponent title='Maghrib' time={this.state.jadwal.Maghrib} />
+                                <JadwalComponent title='Isya' time={this.state.jadwal.Isha} />
                             </SkeletonContent>
                         </Card>
                     </View>

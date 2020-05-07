@@ -44,7 +44,7 @@ export default class index extends Component {
                         <ListItem
                             key={i}
                             title={item.ar}
-                            leftElement={'( ' + item.nomor + ' )'}
+                            leftElement={'( ' + item.nomor.toString() + ' )'}
                             titleStyle={{ color: '#000', fontSize: 25 }}
                             subtitle={item.nomor + ' ' + item.id}
                             subtitleStyle={{ color: colorPrimary, fontSize: 12 }}
