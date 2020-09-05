@@ -3,6 +3,8 @@ import { Text, View, ScrollView } from 'react-native'
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 import Axios from 'axios';
 import { ListItem } from 'react-native-elements';
+import { InterstitialAd, TestIds, AdEventType} from '@react-native-firebase/admob';
+
 export default class index extends Component {
 
     constructor(props) {
@@ -11,6 +13,21 @@ export default class index extends Component {
             hasil: [],
             isLoading : true,
         }
+    }
+
+    showInterstitialAd = () => {
+        // Create a new instance
+        const interstitialAd = InterstitialAd.createForAdRequest("ca-app-pub-1766778224107216/3105404907");
+    
+        // Add event handlers
+        interstitialAd.onAdEvent((type, error) => {
+            if (type === AdEventType.LOADED) {
+                interstitialAd.show();
+            }
+        });
+    
+        // Load a new advert
+        interstitialAd.load();
     }
 
     async getAllSurat() {
@@ -28,7 +45,7 @@ export default class index extends Component {
 
     componentDidMount() {
         this.getAllSurat();
-        console.log(this.props.navigation);
+        this.showInterstitialAd();
     }
 
     render() {

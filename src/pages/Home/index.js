@@ -9,7 +9,7 @@ import axios from 'axios';
 import moment from 'moment';
 import SkeletonContent from "react-native-skeleton-content-nonexpo";
 import Geolocation from 'react-native-geolocation-service';
-
+import admob, { MaxAdContentRating, BannerAd, TestIds, BannerAdSize } from '@react-native-firebase/admob';
 
 const JadwalComponent = ({ title = 'default', time = '00:00' }) => {
     return (
@@ -52,9 +52,9 @@ export default class index extends Component {
         try {
             const tgl = moment().unix();
             const response = await axios.get(
-                'http://api.aladhan.com/v1/timings/'+ tgl.toString() +
-                '?latitude='+ this.state.lat +
-                '&longitude='+ this.state.long +'&method=2');
+                'http://api.aladhan.com/v1/timings/' + tgl.toString() +
+                '?latitude=' + this.state.lat +
+                '&longitude=' + this.state.long + '&method=2');
             this.setState({
                 jadwal: response.data.data.timings,
                 dateNow: response.data.data.date.readable,
@@ -73,7 +73,7 @@ export default class index extends Component {
                 authorizationLevel: 'whenInUse',
             });
         }
-      
+
         if (Platform.OS === 'android') {
             await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -119,6 +119,21 @@ export default class index extends Component {
     componentDidMount() {
         this.getQuranAcak();
         this.requestPermissions();
+        // admob()
+        //     .setRequestConfiguration({
+        //         // Update all future requests suitable for parental guidance
+        //         maxAdContentRating: MaxAdContentRating.PG,
+
+        //         // Indicates that you want your content treated as child-directed for purposes of COPPA.
+        //         tagForChildDirectedTreatment: true,
+
+        //         // Indicates that you want the ad request to be handled in a
+        //         // manner suitable for users under the age of consent.
+        //         tagForUnderAgeOfConsent: true,
+        //     })
+        //     .then(() => {
+        //         // Request config successfully set!
+        //     });
     }
     render() {
         return (
@@ -141,9 +156,9 @@ export default class index extends Component {
                             <View style={styles.containerLokasi}>
                                 <View style={styles.flexRow}>
                                     <Icon name='map-marker' size={20} color={colorWhite} />
-                                {
-                                    this.state.isLoading ? <Text style={styles.textBottom}>---, ---</Text> : <Text style={styles.textBottom}>{this.state.placeName}</Text>
-                                }
+                                    {
+                                        this.state.isLoading ? <Text style={styles.textBottom}>---, ---</Text> : <Text style={styles.textBottom}>{this.state.placeName}</Text>
+                                    }
                                 </View>
                                 <View style={styles.flexRow}>
                                     <Icon name='calendar' size={20} color={colorWhite} />
@@ -175,7 +190,7 @@ export default class index extends Component {
                             </SkeletonContent>
                         </Card>
                     </View>
-                    <View>
+                    <View style={{ marginBottom: 25 }}>
                         <Card containerStyle={styles.styleCard} >
                             <View>
                                 <Text style={{ fontWeight: 'bold', fontSize: 14, marginBottom: 4, }}>Ayat Hari Ini</Text>
@@ -194,6 +209,19 @@ export default class index extends Component {
                             </View>
                         </Card>
                     </View>
+                    <BannerAd
+                         unitId={"ca-app-pub-1766778224107216/7107712175"}
+                        size={BannerAdSize.SMART_BANNER}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                        }}
+                        onAdLoaded={() => {
+                            console.log('Advert loaded');
+                        }}
+                        onAdFailedToLoad={(error) => {
+                            console.error('Advert failed to load: ', error);
+                        }}
+                    />
                 </View>
             </ScrollView>
         )

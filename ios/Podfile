@@ -83,6 +83,10 @@ target 'jadwal_sholat_mobile' do
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
+  pod 'RNFBAdMob', :path => '../node_modules/@react-native-firebase/admob'
+
+  pod 'RNPDF', :path => '../node_modules/react-native-view-pdf'
+
   target 'jadwal_sholat_mobileTests' do
     inherit! :complete
     # Pods for testing

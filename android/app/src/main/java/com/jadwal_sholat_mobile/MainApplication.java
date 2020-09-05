@@ -5,6 +5,7 @@ import android.content.Context;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.rumax.reactnative.pdfviewer.PDFViewPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           new RNFusedLocationPackage();
+          new PDFViewPackage();
           return packages;
         }
 

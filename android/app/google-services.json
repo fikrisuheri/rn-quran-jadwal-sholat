@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "365167390653",
+    "firebase_url": "https://alquranmobile2.firebaseio.com",
+    "project_id": "alquranmobile2",
+    "storage_bucket": "alquranmobile2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365167390653:android:311a389964c8d39d5cacd4",
+        "android_client_info": {
+          "package_name": "com.jadwal_sholat_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "365167390653-1p414ko1log5fc9h45f3mbq2de3a6hr0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jadwal_sholat_mobile",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "365167390653-vsg7cs6lld4a3hehedgq7imlloiqu64s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAza0a5bYgtxVO9B4e18W3UIw9MJATUut4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "365167390653-vsg7cs6lld4a3hehedgq7imlloiqu64s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Home, Quran, Surat, Splash, Notif } from '../pages';
+import { Home, Quran, Surat, Splash, Notif, Iqra, IqraDetail } from '../pages';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { colorPrimary, colorStatusBar, colorWhite } from '../assets/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -33,6 +33,15 @@ const MyTab = () => {
                     )
                 }}
             />
+            <Tab.Screen
+                name="iqra" component={Iqra}
+                options={{
+                    tabBarLabel: 'Iqra',
+                    tabBarIcon: ({ color }) => (
+                        <Icon name="book-open" size={25} color={color} />
+                    )
+                }}
+            />
         </Tab.Navigator>
     )
 }
@@ -51,6 +60,8 @@ const Route = () => {
                 options={{
                     headerShown: false,
                 }} />
+            <Stack.Screen name="IqraDetail" component={IqraDetail}
+               />
             <Stack.Screen name="Surat" component={Surat} />
         </Stack.Navigator>
     )
